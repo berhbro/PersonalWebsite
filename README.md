@@ -49,7 +49,7 @@ dist/
 
 Cloudflare 连接 GitHub 仓库后，每次 `git push` 都会自动运行构建并部署。
 
-注意：Cloudflare Pages 不直接运行 Flask 后端，所以部署时使用 `build_static.py` 把 Flask 页面导出成静态 HTML。音乐歌单会导出为 `dist/api/music/playlist.json`，本地音乐文件会从 `static/music/` 一起复制。
+注意：Cloudflare Pages 不直接运行 Flask 后端，所以部署时使用 `build_static.py` 把 Flask 页面导出成静态 HTML。音乐歌单会导出为 `dist/api/music/playlist.json`，本地音乐文件会从 `static/music/` 一起复制；超过 Cloudflare Workers 单文件限制的资源会自动跳过。
 
 ## Cloudflare Worker 部署
 
@@ -71,7 +71,7 @@ npx wrangler deploy
 
 项目里的 `src/worker.js` 会优先读取静态资源，并为 `/demos`、`/gallery`、`/blog/文章slug` 这类无 `.html` 后缀的路径自动匹配对应的 `index.html`。
 
-注意：如果 `static/music/` 里的本地音乐文件很大，可能会受到 Cloudflare 单文件大小或账号套餐限制影响；上线失败时可以把音乐文件改成外链 CDN，再在 `content/music_playlist.json` 中填写 `audio_url`。
+注意：Cloudflare Workers Static Assets 单个文件最大支持 25 MiB。`build_static.py` 会自动跳过超过限制的本地音乐文件，并从线上导出的歌单里移除这些不可访问歌曲。上线播放音乐时，建议把 FLAC 转成小于 25 MiB 的 MP3，或把音乐上传到 R2/CDN 后在 `content/music_playlist.json` 中填写外链 `audio_url`。
 
 ## 更新个人信息
 
@@ -205,6 +205,6 @@ content/music_playlist.json
 
 说明：
 
-- `audio_url`：最稳定，推荐使用本地 `/static/music/xxx.mp3`
+- `audio_url`：最稳定，推荐使用本地 `/static/music/xxx.mp3`；部署到 Cloudflare Workers 时单个文件需小于 25 MiB
 - `hash`：使用酷狗解析，可能受版权限制影响
 - 播放器会按照歌单顺序循环播放

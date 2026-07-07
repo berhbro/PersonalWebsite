@@ -2,19 +2,19 @@
   {
     "title": "再度和你 With You Once More",
     "artist": "HOYO-MiX",
-    "audio_url": "/static/music/HOYO-MiX - 再度和你 With You Once More.flac",
+    "audio_url": "/static/music/HOYO-MiX - 再度和你 With You Once More.mp3",
     "cover": "/static/images/avatar.jpg"
   },
   {
     "title": "心忆 Remembrance of the Heart",
     "artist": "HOYO-MiX",
-    "audio_url": "/static/music/HOYO-MiX - 心忆 Remembrance of the Heart.flac",
+    "audio_url": "/static/music/HOYO-MiX - 心忆 Remembrance of the Heart.mp3",
     "cover": "/static/images/avatar.jpg"
   },
   {
     "title": "昔涟",
     "artist": "张韶涵、HOYO-MiX",
-    "audio_url": "/static/music/张韶涵、HOYO-MiX - 昔涟.flac",
+    "audio_url": "/static/music/张韶涵、HOYO-MiX - 昔涟.mp3",
     "cover": "/static/images/avatar.jpg"
   }
 ]
