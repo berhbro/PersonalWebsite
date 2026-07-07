@@ -51,6 +51,28 @@ Cloudflare 连接 GitHub 仓库后，每次 `git push` 都会自动运行构建�
 
 注意：Cloudflare Pages 不直接运行 Flask 后端，所以部署时使用 `build_static.py` 把 Flask 页面导出成静态 HTML。音乐歌单会导出为 `dist/api/music/playlist.json`，本地音乐文件会从 `static/music/` 一起复制。
 
+## Cloudflare Worker 部署
+
+也可以使用 Cloudflare Workers Static Assets 部署。这个方式仍然不是在 Worker 里直接运行 Flask，而是先用 `build_static.py` 导出静态站点，再由 Worker 托管 `dist/`。
+
+本地部署命令：
+
+```bash
+python -m pip install -r requirements.txt
+python build_static.py
+npx wrangler deploy
+```
+
+如果在 Cloudflare 控制台连接 GitHub 仓库创建 Worker，推荐配置：
+
+- Build command：`python -m pip install -r requirements.txt && python build_static.py`
+- Deploy command：`npx wrangler deploy`
+- Wrangler config：`wrangler.jsonc`
+
+项目里的 `src/worker.js` 会优先读取静态资源，并为 `/demos`、`/gallery`、`/blog/文章slug` 这类无 `.html` 后缀的路径自动匹配对应的 `index.html`。
+
+注意：如果 `static/music/` 里的本地音乐文件很大，可能会受到 Cloudflare 单文件大小或账号套餐限制影响；上线失败时可以把音乐文件改成外链 CDN，再在 `content/music_playlist.json` 中填写 `audio_url`。
+
 ## 更新个人信息
 
 在 `app.py` 中修改 `profile`：
