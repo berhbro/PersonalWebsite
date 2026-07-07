@@ -1,0 +1,53 @@
+[
+  {
+    "slug": "personal-website",
+    "name": "个人网站",
+    "description": "基于 Flask、HTML、CSS 和少量 JavaScript 搭建的响应式个人主页。",
+    "tags": ["Flask", "HTML", "CSS", "JavaScript"],
+    "github": "https://github.com/berhbro",
+    "video": {
+      "type": "file",
+      "url": "",
+      "title": "项目演示视频"
+    },
+    "document": [
+      "这个项目用于展示个人简介、Demo 作品、Blog、相册和音乐组件。",
+      "后端使用 Flask 组织路由和内容加载，前端保持纯 HTML、CSS 和原生 JavaScript。",
+      "部署后可以通过修改 content 目录里的内容文件来更新作品和博客。"
+    ]
+  },
+  {
+    "slug": "python-toolbox",
+    "name": "Python 小工具合集",
+    "description": "整理常用 Python 脚本、自动化工具和学习练习。",
+    "tags": ["Python", "Automation", "Tools"],
+    "github": "https://github.com/berhbro",
+    "video": {
+      "type": "embed",
+      "url": "",
+      "title": "功能演示"
+    },
+    "document": [
+      "这里可以写项目背景、功能列表、技术实现和使用方法。",
+      "如果有 GitHub 仓库，把 github 字段改成对应地址即可。",
+      "如果有 B 站或其他平台的视频嵌入链接，可以填写 video.url 并把 type 设置为 embed。"
+    ]
+  },
+  {
+    "slug": "portfolio-demo",
+    "name": "作品 Demo 03",
+    "description": "用于占位展示的 Demo 项目，你可以替换为自己的课程项目或开源项目。",
+    "tags": ["Portfolio", "Demo"],
+    "github": "",
+    "video": {
+      "type": "file",
+      "url": "",
+      "title": "演示视频"
+    },
+    "document": [
+      "把这里替换成项目说明文档。",
+      "建议包含：项目简介、核心功能、技术栈、运行方式、亮点截图或视频。",
+      "如果没有视频或 GitHub 链接，对应字段留空即可。"
+    ]
+  }
+]

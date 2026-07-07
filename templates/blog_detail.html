@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - {{ profile.name }}的个人网站{% endblock %}
+
+{% block content %}
+<article class="article">
+    <a class="text-link" href="{{ url_for('index') }}#blog">← 返回 Blog</a>
+    <p class="eyebrow">Blog</p>
+    <h1>{{ post.title }}</h1>
+    <time>{{ post.date }}</time>
+    {% for paragraph in post.content %}
+    <p>{{ paragraph }}</p>
+    {% endfor %}
+</article>
+{% endblock %}

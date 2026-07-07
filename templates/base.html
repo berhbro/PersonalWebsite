@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ profile.name }}的小站{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav">
+            <a class="logo" href="{{ url_for('index') }}">{{ profile.name }}的小站</a>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}#about">简介</a>
+                <a href="{{ url_for('index') }}#blog">Blog</a>
+                <a href="{{ url_for('demos_library') }}">作品集</a>
+                <a href="{{ url_for('gallery') }}">相册</a>
+                <a href="{{ url_for('index') }}#contact">联系</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="music-widget" id="musicWidget" aria-label="酷狗音乐播放器">
+        <button class="music-toggle" id="musicToggle" type="button" aria-expanded="false">
+            <span class="music-note">♪</span>
+            <span>音乐</span>
+        </button>
+
+        <div class="music-panel" aria-hidden="true">
+            <div class="music-cover">
+                <img id="musicCover" src="{{ url_for('static', filename='images/avatar.svg') }}" alt="歌曲封面">
+            </div>
+            <div class="music-info">
+                <p class="eyebrow">Kugou API</p>
+                <h3 id="musicTitle">正在加载音乐</h3>
+                <p id="musicArtist">请稍等一小会儿</p>
+            </div>
+
+            <p class="music-playlist-meta" id="musicPlaylistMeta">固定歌单 · 循环播放</p>
+
+            <div class="music-controls">
+                <div class="music-buttons">
+                    <button class="music-prev" id="musicPrev" type="button">上一首</button>
+                    <button class="music-play" id="musicPlay" type="button">播放</button>
+                    <button class="music-next" id="musicNext" type="button">下一首</button>
+                </div>
+                <div class="music-timeline">
+                    <input id="musicProgress" type="range" min="0" max="1000" value="0" aria-label="音乐播放进度">
+                    <div class="music-time">
+                        <span id="musicCurrent">0:00</span>
+                        <span id="musicDuration">0:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="music-status" id="musicStatus">使用酷狗 API 获取歌曲。</p>
+            <audio id="musicAudio" preload="metadata"></audio>
+        </div>
+    </section>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer" id="contact">
+        <p>找到我：</p>
+        <div class="social-links">
+            <a class="footer-icon-link" href="{{ profile.github }}" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2.25A9.75 9.75 0 0 0 8.92 21.25c.49.09.66-.21.66-.47v-1.69c-2.7.59-3.27-1.16-3.27-1.16-.44-1.12-1.08-1.42-1.08-1.42-.88-.6.07-.59.07-.59.98.07 1.5 1.01 1.5 1.01.86 1.48 2.27 1.05 2.82.8.09-.63.34-1.05.61-1.29-2.16-.25-4.42-1.08-4.42-4.8 0-1.06.38-1.93 1-2.61-.1-.25-.43-1.24.1-2.58 0 0 .82-.26 2.68 1 .78-.22 1.62-.33 2.45-.33s1.67.11 2.45.33c1.86-1.26 2.67-1 2.67-1 .54 1.34.2 2.33.1 2.58.63.68 1 1.55 1 2.61 0 3.73-2.27 4.55-4.43 4.79.35.3.66.9.66 1.81v2.69c0 .26.18.57.67.47A9.75 9.75 0 0 0 12 2.25Z"/>
+                </svg>
+                <span>GitHub</span>
+            </a>
+            <a class="footer-icon-link" href="{{ profile.bilibili }}" target="_blank" rel="noreferrer" aria-label="Bilibili">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8.08 4.31a1 1 0 0 1 1.41.1L11.7 6.94h.61l2.2-2.53a1 1 0 1 1 1.51 1.31l-1.06 1.22h1.96a3.58 3.58 0 0 1 3.58 3.58v5.72a3.58 3.58 0 0 1-3.58 3.58H7.08a3.58 3.58 0 0 1-3.58-3.58v-5.72a3.58 3.58 0 0 1 3.58-3.58h1.96L7.98 5.72a1 1 0 0 1 .1-1.41Zm-.62 4.63a1.96 1.96 0 0 0-1.96 1.96v4.96c0 1.08.88 1.96 1.96 1.96h9.08a1.96 1.96 0 0 0 1.96-1.96V10.9a1.96 1.96 0 0 0-1.96-1.96H7.46Zm1.78 3.02a1.05 1.05 0 1 1 2.1 0v1.9a1.05 1.05 0 1 1-2.1 0v-1.9Zm3.42 0a1.05 1.05 0 1 1 2.1 0v1.9a1.05 1.05 0 1 1-2.1 0v-1.9Z"/>
+                </svg>
+                <span>Bilibili</span>
+            </a>
+            <a class="footer-icon-link" href="mailto:{{ profile.qq_email }}" target="_blank" rel="noreferrer" aria-label="QQ 邮箱">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4.75 5.5h14.5A2.75 2.75 0 0 1 22 8.25v7.5a2.75 2.75 0 0 1-2.75 2.75H4.75A2.75 2.75 0 0 1 2 15.75v-7.5A2.75 2.75 0 0 1 4.75 5.5Zm-.55 3.08v7.17c0 .3.25.55.55.55h14.5c.3 0 .55-.25.55-.55V8.58l-6.49 4.55a2.26 2.26 0 0 1-2.62 0L4.2 8.58Zm1.19-.88 6.44 4.51c.1.07.24.07.34 0l6.44-4.51H5.39Z"/>
+                </svg>
+                <span>{{ profile.qq_email }}</span>
+            </a>
+        </div>
+        <small>© 2026 {{ profile.name }}. Built with Flask.</small>
+    </footer>
+    <script src="{{ url_for('static', filename='js/music.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gallery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/router.js') }}"></script>
+</body>
+</html>

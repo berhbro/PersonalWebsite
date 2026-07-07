@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}作品库 - {{ profile.name }}的个人网站{% endblock %}
+
+{% block content %}
+<section class="demos-page">
+    <div class="demos-hero">
+        <div>
+            <p class="eyebrow">Demo Library</p>
+            <h1>Demo 作品库</h1>
+            <p>这里集中展示项目文档、GitHub 链接和演示视频。首页的 Demo 卡片会跳转到对应作品。</p>
+        </div>
+        <a class="button ghost" href="{{ url_for('index') }}#demos">返回首页</a>
+    </div>
+
+    <div class="demo-library">
+        {% for demo in demos %}
+        <article class="demo-entry" id="{{ demo.slug }}">
+            <div class="demo-entry-main">
+                <p class="eyebrow">Project {{ loop.index }}</p>
+                <h2>{{ demo.name }}</h2>
+                <p class="demo-entry-desc">{{ demo.description }}</p>
+
+                <div class="tags">
+                    {% for tag in demo.tags %}
+                    <span>{{ tag }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="demo-actions">
+                    {% if demo.github %}
+                    <a class="button primary" href="{{ demo.github }}" target="_blank" rel="noreferrer">GitHub</a>
+                    {% endif %}
+                    {% if demo.video and demo.video.url %}
+                    <a class="button ghost" href="#video-{{ demo.slug }}">播放视频</a>
+                    {% endif %}
+                </div>
+
+                <div class="demo-document">
+                    <h3>项目文档</h3>
+                    {% for paragraph in demo.document %}
+                    <p>{{ paragraph }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <aside class="demo-video" id="video-{{ demo.slug }}">
+                <h3>{{ demo.video.title if demo.video else "演示视频" }}</h3>
+                {% if demo.video and demo.video.url %}
+                    {% if demo.video.type == "embed" %}
+                    <iframe src="{{ demo.video.url }}" title="{{ demo.name }} 演示视频" allowfullscreen></iframe>
+                    {% else %}
+                    <video controls preload="metadata" src="{{ demo.video.url }}"></video>
+                    {% endif %}
+                {% else %}
+                <div class="video-placeholder">
+                    <p>暂无演示视频</p>
+                    <small>在 `content/demos.json` 中填写 `video.url` 后这里会显示播放器。</small>
+                </div>
+                {% endif %}
+            </aside>
+        </article>
+        {% else %}
+        <div class="gallery-empty">
+            <p>还没有 Demo。编辑 <code>content/demos.json</code> 后刷新页面即可。</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

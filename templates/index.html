@@ -1,0 +1,127 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<section class="home-layout" id="about">
+    <div class="left-rail">
+        <aside class="profile-card">
+            <div class="avatar-wrap">
+                <img class="avatar" src="{{ url_for('static', filename='images/avatar.jpg') }}" alt="{{ profile.name }} 的头像">
+            </div>
+
+            <p class="eyebrow">Personal Card</p>
+            <h1>{{ profile.name }}</h1>
+            <p class="profile-title">{{ profile.title }}</p>
+
+            <div class="profile-links" aria-label="社交链接">
+                <a class="icon-link" href="{{ profile.github }}" target="_blank" rel="noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2.25A9.75 9.75 0 0 0 8.92 21.25c.49.09.66-.21.66-.47v-1.69c-2.7.59-3.27-1.16-3.27-1.16-.44-1.12-1.08-1.42-1.08-1.42-.88-.6.07-.59.07-.59.98.07 1.5 1.01 1.5 1.01.86 1.48 2.27 1.05 2.82.8.09-.63.34-1.05.61-1.29-2.16-.25-4.42-1.08-4.42-4.8 0-1.06.38-1.93 1-2.61-.1-.25-.43-1.24.1-2.58 0 0 .82-.26 2.68 1 .78-.22 1.62-.33 2.45-.33s1.67.11 2.45.33c1.86-1.26 2.67-1 2.67-1 .54 1.34.2 2.33.1 2.58.63.68 1 1.55 1 2.61 0 3.73-2.27 4.55-4.43 4.79.35.3.66.9.66 1.81v2.69c0 .26.18.57.67.47A9.75 9.75 0 0 0 12 2.25Z"/>
+                    </svg>
+                    <span>GitHub</span>
+                </a>
+                <a class="icon-link" href="{{ profile.bilibili }}" target="_blank" rel="noreferrer" aria-label="Bilibili">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M8.08 4.31a1 1 0 0 1 1.41.1L11.7 6.94h.61l2.2-2.53a1 1 0 1 1 1.51 1.31l-1.06 1.22h1.96a3.58 3.58 0 0 1 3.58 3.58v5.72a3.58 3.58 0 0 1-3.58 3.58H7.08a3.58 3.58 0 0 1-3.58-3.58v-5.72a3.58 3.58 0 0 1 3.58-3.58h1.96L7.98 5.72a1 1 0 0 1 .1-1.41Zm-.62 4.63a1.96 1.96 0 0 0-1.96 1.96v4.96c0 1.08.88 1.96 1.96 1.96h9.08a1.96 1.96 0 0 0 1.96-1.96V10.9a1.96 1.96 0 0 0-1.96-1.96H7.46Zm1.78 3.02a1.05 1.05 0 1 1 2.1 0v1.9a1.05 1.05 0 1 1-2.1 0v-1.9Zm3.42 0a1.05 1.05 0 1 1 2.1 0v1.9a1.05 1.05 0 1 1-2.1 0v-1.9Z"/>
+                    </svg>
+                    <span>Bilibili</span>
+                </a>
+                <a class="icon-link" href="mailto:{{ profile.qq_email }}" target="_blank" rel="noreferrer" aria-label="QQ 邮箱">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4.75 5.5h14.5A2.75 2.75 0 0 1 22 8.25v7.5a2.75 2.75 0 0 1-2.75 2.75H4.75A2.75 2.75 0 0 1 2 15.75v-7.5A2.75 2.75 0 0 1 4.75 5.5Zm-.55 3.08v7.17c0 .3.25.55.55.55h14.5c.3 0 .55-.25.55-.55V8.58l-6.49 4.55a2.26 2.26 0 0 1-2.62 0L4.2 8.58Zm1.19-.88 6.44 4.51c.1.07.24.07.34 0l6.44-4.51H5.39Z"/>
+                    </svg>
+                    <span>QQ 邮箱</span>
+                </a>
+            </div>
+
+            <p class="profile-summary">{{ profile.summary }}</p>
+
+            <div class="tags">
+                {% for skill in profile.skills %}
+                <span>{{ skill }}</span>
+                {% endfor %}
+            </div>
+        </aside>
+
+        <section class="album-card" aria-label="相册">
+            <div class="album-heading">
+                <div>
+                    <p class="eyebrow">Gallery</p>
+                    <h2>相册</h2>
+                </div>
+                <span>{{ album_photos|length }}</span>
+            </div>
+
+            {% if album_photos %}
+            <div class="album-carousel" data-album-carousel>
+                <a class="album-carousel-link" href="{{ url_for('gallery') }}" aria-label="进入相册页面">
+                    {% for photo in album_photos %}
+                    <figure class="album-slide{% if loop.first %} is-active{% endif %}">
+                        <img src="{{ url_for('static', filename=photo.src) }}" alt="相册照片 {{ loop.index }}">
+                        <figcaption>Photo {{ loop.index }}</figcaption>
+                    </figure>
+                    {% endfor %}
+                </a>
+                <div class="album-dots" aria-label="相册轮播分页">
+                    {% for photo in album_photos %}
+                    <button class="{% if loop.first %}is-active{% endif %}" type="button" data-carousel-dot="{{ loop.index0 }}" aria-label="查看第 {{ loop.index }} 张照片"></button>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <div class="album-empty-wrap">
+                <p class="album-empty">把照片放进 <code>static/images/album</code> 文件夹后，这里会自动显示。</p>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+
+    <div class="content-panels">
+        <section class="panel" id="blog">
+            <div class="section-heading compact">
+                <div>
+                    <p class="eyebrow">Latest Blog</p>
+                    <h2>latest Blogs</h2>
+                </div>
+            </div>
+
+            <div class="blog-list">
+                {% for post in blog_posts[:2] %}
+                <article class="blog-item">
+                    <div>
+                        <time>{{ post.date }}</time>
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.excerpt }}</p>
+                    </div>
+                    <a class="button ghost" href="{{ url_for('blog_detail', slug=post.slug) }}">阅读全文</a>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="panel" id="demos">
+            <div class="section-heading compact">
+                <div>
+                    <p class="eyebrow">Portfolio</p>
+                    <h2>Demo Portfolio</h2>
+                </div>
+                <a class="text-link" href="{{ url_for('demos_library') }}">进入作品库 →</a>
+            </div>
+
+            <div class="demo-grid">
+                {% for demo in demos %}
+                <article class="demo-card">
+                    <h3>{{ demo.name }}</h3>
+                    <p>{{ demo.description }}</p>
+                    <div class="tags">
+                        {% for tag in demo.tags %}
+                        <span>{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    <a class="text-link" href="{{ url_for('demos_library') }}#{{ demo.slug }}">查看项目 →</a>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock %}

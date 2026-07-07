@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}相册 - {{ profile.name }}的个人网站{% endblock %}
+
+{% block content %}
+<section class="gallery-page">
+    <div class="gallery-hero">
+        <div>
+            <p class="eyebrow">Gallery</p>
+            <h1>相册</h1>
+            <p>这里收集了 {{ album_photos|length }} 张照片。点击任意图片可以放大查看。</p>
+        </div>
+        <a class="button ghost" href="{{ url_for('index') }}#about">返回首页</a>
+    </div>
+
+    {% if album_photos %}
+    <div class="gallery-grid">
+        {% for photo in album_photos %}
+        <button class="gallery-item" type="button" data-full-src="{{ url_for('static', filename=photo.src) }}" data-title="Photo {{ loop.index }}">
+            <img src="{{ url_for('static', filename=photo.src) }}" alt="相册照片 {{ loop.index }}">
+            <span>Photo {{ loop.index }}</span>
+        </button>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="gallery-empty">
+        <p>还没有相册图片。把图片放入 <code>static/images/album</code> 后刷新页面即可。</p>
+    </div>
+    {% endif %}
+</section>
+
+<div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="关闭预览">×</button>
+    <img id="lightboxImage" src="" alt="放大的相册照片">
+    <p id="lightboxTitle"></p>
+</div>
+{% endblock %}
