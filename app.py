@@ -441,6 +441,7 @@ def music_search():
 
 
 @app.route("/api/music/playlist")
+@app.route("/api/music/playlist.json")
 def music_playlist():
     tracks = []
     for track in load_music_playlist():

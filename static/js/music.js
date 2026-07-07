@@ -109,7 +109,7 @@ function loadTrack(index, autoplay = false) {
 
 async function loadPlaylist() {
     setStatus("正在加载固定歌单...");
-    const data = await fetchJson("/api/music/playlist");
+    const data = await fetchJson("/api/music/playlist.json");
     playlist = data.tracks || [];
 
     if (!playlist.length) {

@@ -26,6 +26,31 @@ python app.py
 http://127.0.0.1:5000
 ```
 
+## Cloudflare Pages 自动部署
+
+这个项目可以静态导出后部署到 Cloudflare Pages。推荐配置：
+
+- Framework preset：`None`
+- Build command：`python -m pip install -r requirements.txt && python build_static.py`
+- Build output directory：`dist`
+- Root directory：留空
+
+本地测试静态构建：
+
+```bash
+python build_static.py
+```
+
+构建成功后会生成：
+
+```text
+dist/
+```
+
+Cloudflare 连接 GitHub 仓库后，每次 `git push` 都会自动运行构建并部署。
+
+注意：Cloudflare Pages 不直接运行 Flask 后端，所以部署时使用 `build_static.py` 把 Flask 页面导出成静态 HTML。音乐歌单会导出为 `dist/api/music/playlist.json`，本地音乐文件会从 `static/music/` 一起复制。
+
 ## 更新个人信息
 
 在 `app.py` 中修改 `profile`：
