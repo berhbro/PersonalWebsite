@@ -9,7 +9,7 @@ backend:
   auth_endpoint: /api/auth
 
 media_folder: static/images/uploads
-public_folder: /images/uploads
+public_folder: /static/images/uploads
 
 collections:
   - name: blog
@@ -58,3 +58,39 @@ collections:
                 required: false
                 fields:
                   - { label: 段落, name: paragraph, widget: text }
+
+  - name: profile
+    label: 简介
+    files:
+      - label: 个人资料
+        name: profile
+        file: content/profile.json
+        format: json
+        fields:
+          - { label: 昵称, name: name, widget: string }
+          - { label: 头衔, name: title, widget: string }
+          - { label: 个人简介, name: summary, widget: text }
+          - { label: 技能标签, name: skills, widget: list, required: false }
+          - { label: GitHub 地址, name: github, widget: string, required: false }
+          - { label: Bilibili 地址, name: bilibili, widget: string, required: false }
+          - { label: QQ 邮箱, name: qq_email, widget: string, required: false }
+
+  - name: music
+    label: 音乐
+    media_folder: static/music
+    public_folder: /static/music
+    files:
+      - label: 播放列表
+        name: tracks
+        file: content/music_playlist.json
+        format: json
+        fields:
+          - label: 歌曲
+            name: tracks
+            widget: list
+            allow_add: true
+            fields:
+              - { label: 歌名, name: title, widget: string }
+              - { label: 歌手, name: artist, widget: string }
+              - { label: 音频文件, name: audio_url, widget: file }
+              - { label: 封面图, name: cover, widget: image, required: false, media_folder: static/images, public_folder: /static/images }

@@ -13,9 +13,10 @@ CONTENT_DIR = BASE_DIR / "content"
 BLOG_DIR = CONTENT_DIR / "blogs"
 DEMOS_FILE = CONTENT_DIR / "demos.json"
 MUSIC_PLAYLIST_FILE = CONTENT_DIR / "music_playlist.json"
+PROFILE_FILE = CONTENT_DIR / "profile.json"
 ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 
-profile = {
+_DEFAULT_PROFILE = {
     "name": "done",
     "title": "来自小池塘大学(GBU)的CS小白",
     "summary": "CS小白，能看懂Python语法，了解过Flask框架，HTML和CSS，能做一些简单的Web开发。努力学习C#和web全栈ing。该网站由我vibecoding开发，后续会继续完善。",
@@ -24,6 +25,15 @@ profile = {
     "bilibili": "https://space.bilibili.com/604167866?",
     "qq_email": "1931912482@qq.com",
 }
+
+profile = dict(_DEFAULT_PROFILE)
+if PROFILE_FILE.exists():
+    try:
+        loaded_profile = json.loads(PROFILE_FILE.read_text(encoding="utf-8"))
+        if isinstance(loaded_profile, dict):
+            profile.update(loaded_profile)
+    except (json.JSONDecodeError, OSError):
+        pass
 
 music_config = {
     "default_keyword": "钢琴曲",
@@ -124,7 +134,8 @@ def load_music_playlist():
     if not MUSIC_PLAYLIST_FILE.exists():
         return []
 
-    tracks = json.loads(MUSIC_PLAYLIST_FILE.read_text(encoding="utf-8"))
+    data = json.loads(MUSIC_PLAYLIST_FILE.read_text(encoding="utf-8"))
+    tracks = data.get("tracks", []) if isinstance(data, dict) else data
     if not isinstance(tracks, list):
         return []
 
