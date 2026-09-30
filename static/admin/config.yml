@@ -21,7 +21,7 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: 标题, name: title, widget: string }
-      - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, format: YYYY-MM-DD }
+      - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, default: "{{now}}" }
       - { label: 链接(英文 slug), name: slug, widget: string }
       - { label: 摘要, name: excerpt, widget: string, required: false }
       - { label: 正文, name: body, widget: markdown }
