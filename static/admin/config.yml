@@ -5,7 +5,7 @@ backend:
   name: github
   repo: berhbro/PersonalWebsite
   branch: main
-  base_url: https://https://github.com/berhbro/
+  base_url: https://meme.dpdns.org
   auth_endpoint: /api/auth
 
 media_folder: static/images/uploads
