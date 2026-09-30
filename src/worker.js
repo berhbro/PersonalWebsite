@@ -71,7 +71,17 @@ async function handleOAuthCallback(request, env) {
     }),
   });
 
-  const { access_token } = await res.json();
+  const data = await res.json();
+  const { access_token } = data;
+
+  if (!access_token) {
+    const debug = new Response(
+      `<h3>OAuth callback</h3><p>GitHub returned an error instead of an access token:</p><pre>${JSON.stringify(data, null, 2)}</pre>`,
+      { headers: { "Content-Type": "text/html; charset=utf-8" } }
+    );
+    return debug;
+  }
+
   const html = `<script>
   if (window.opener) {
     window.opener.postMessage('authorization:github:success:${JSON.stringify({
@@ -79,7 +89,7 @@ async function handleOAuthCallback(request, env) {
       provider: "github",
     })}', window.location.origin);
   }
-  window.close();
+  setTimeout(() => window.close(), 500);
 </script>`;
 
   return new Response(html, {
