@@ -73,6 +73,26 @@ npx wrangler deploy
 
 注意：Cloudflare Workers Static Assets 单个文件最大支持 25 MiB。`build_static.py` 会自动跳过超过限制的本地音乐文件，并从线上导出的歌单里移除这些不可访问歌曲。上线播放音乐时，建议把 FLAC 转成小于 25 MiB 的 MP3，或把音乐上传到 R2/CDN 后在 `content/music_playlist.json` 中填写外链 `audio_url`。
 
+## 网页内容后台（Decap CMS）
+
+项目集成了 [Decap CMS](https://decapcms.org/)（原 Netlify CMS），可以不用改代码、直接在网页上编辑 Blog 和作品集，改动会以 git 提交写回仓库并自动重新部署。后台地址：`你的域名/static/admin/index.html`（导航栏的「管理」入口）。
+
+### 首次配置（一次性）
+
+1. **创建 GitHub OAuth App**：GitHub → Settings → Developer settings → OAuth Apps → New OAuth App
+   - Homepage URL：`https://你的域名`
+   - Authorization callback URL：`https://你的域名/api/auth/callback`
+   - 记下 Client ID 和 Client Secret
+2. **配置环境变量**：Cloudflare Pages → 项目 → Settings → Environment variables，新增
+   - `GITHUB_CLIENT_ID` = 上面的 Client ID
+   - `GITHUB_CLIENT_SECRET` = 上面的 Client Secret
+3. **改域名**：把 `static/admin/config.yml` 里的 `base_url` 改成你的真实域名（去掉 `https://你的域名.com` 占位符）
+4. 推送后，Cloudflare Pages 会用新的 build command 构建并部署（Pages Functions 目录 `functions/` 会自动生效）
+
+### 安全说明
+
+只有对该 GitHub 仓库有**写权限**的账号（即你）能通过授权后保存内容；其他人即使登录 GitHub 也无法写入你的仓库。
+
 ## 更新个人信息
 
 在 `app.py` 中修改 `profile`：

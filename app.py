@@ -96,7 +96,8 @@ def load_demos():
     if not DEMOS_FILE.exists():
         return []
 
-    demos = json.loads(DEMOS_FILE.read_text(encoding="utf-8"))
+    data = json.loads(DEMOS_FILE.read_text(encoding="utf-8"))
+    demos = data.get("demos", []) if isinstance(data, dict) else data
     if not isinstance(demos, list):
         return []
 

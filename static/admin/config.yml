@@ -1,0 +1,60 @@
+# Decap CMS 配置
+# 部署前把 base_url 改成你的真实域名，例如 https://xxxx.pages.dev 或自定义域名。
+
+backend:
+  name: github
+  repo: berhbro/PersonalWebsite
+  branch: main
+  base_url: https://你的域名.com
+  auth_endpoint: /api/auth
+
+media_folder: static/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: blog
+    label: 博客
+    folder: content/blogs
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, format: YYYY-MM-DD }
+      - { label: 链接(英文 slug), name: slug, widget: string }
+      - { label: 摘要, name: excerpt, widget: string, required: false }
+      - { label: 正文, name: body, widget: markdown }
+
+  - name: demos
+    label: 作品集
+    files:
+      - label: 作品列表
+        name: demos
+        file: content/demos.json
+        format: json
+        fields:
+          - label: 作品
+            name: demos
+            widget: list
+            allow_add: true
+            fields:
+              - { label: 链接(英文 slug), name: slug, widget: string }
+              - { label: 名称, name: name, widget: string }
+              - { label: 描述, name: description, widget: string }
+              - { label: 标签, name: tags, widget: list }
+              - { label: GitHub地址, name: github, widget: string, required: false }
+              - label: 演示视频
+                name: video
+                widget: object
+                required: false
+                fields:
+                  - { label: 类型(file/embed), name: type, widget: select, options: [file, embed], default: file }
+                  - { label: 地址, name: url, widget: string, required: false }
+                  - { label: 标题, name: title, widget: string, required: false }
+              - label: 项目文档
+                name: document
+                widget: list
+                required: false
+                fields:
+                  - { label: 段落, name: paragraph, widget: text }
