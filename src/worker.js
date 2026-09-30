@@ -82,15 +82,43 @@ async function handleOAuthCallback(request, env) {
     return debug;
   }
 
-  const html = `<script>
-  if (window.opener) {
-    window.opener.postMessage('authorization:github:success:${JSON.stringify({
-      token: access_token,
-      provider: "github",
-    })}', window.location.origin);
+  const tokenJson = JSON.stringify({ token: access_token, provider: "github" });
+
+  const html = `<!doctype html><html><body style="font:14px system-ui;padding:20px">
+<p id="status">正在完成登录…</p>
+<script>
+(function () {
+  var status = document.getElementById("status");
+  var tokenJson = ${JSON.stringify(tokenJson)};
+
+  if (!window.opener) {
+    status.textContent = "错误：未找到登录窗口（window.opener 为空），请返回后台重新登录。";
+    return;
   }
-  setTimeout(() => window.close(), 500);
-</script>`;
+
+  var done = false;
+  function receiveMessage(e) {
+    if (done) return;
+    done = true;
+    window.opener.postMessage("authorization:github:success:" + tokenJson, e.origin);
+    status.textContent = "登录成功，正在返回后台…";
+    setTimeout(function () { window.close(); }, 400);
+  }
+
+  window.addEventListener("message", receiveMessage, false);
+  status.textContent = "正在与后台握手…";
+  window.opener.postMessage("authorizing:github", "*");
+
+  setTimeout(function () {
+    if (done) return;
+    done = true;
+    status.textContent = "握手超时，已直接回传登录信息。";
+    window.opener.postMessage("authorization:github:success:" + tokenJson, "*");
+    setTimeout(function () { window.close(); }, 400);
+  }, 2500);
+})();
+</script>
+</body></html>`;
 
   return new Response(html, {
     headers: { "Content-Type": "text/html; charset=utf-8" },
