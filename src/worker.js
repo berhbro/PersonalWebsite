@@ -72,10 +72,15 @@ async function handleOAuthCallback(request, env) {
   });
 
   const { access_token } = await res.json();
-  const html = `<script>window.opener.postMessage('authorization:github:success:${JSON.stringify({
-    token: access_token,
-    provider: "github",
-  })}', window.location.origin);</script>`;
+  const html = `<script>
+  if (window.opener) {
+    window.opener.postMessage('authorization:github:success:${JSON.stringify({
+      token: access_token,
+      provider: "github",
+    })}', window.location.origin);
+  }
+  window.close();
+</script>`;
 
   return new Response(html, {
     headers: { "Content-Type": "text/html; charset=utf-8" },
