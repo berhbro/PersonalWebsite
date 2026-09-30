@@ -6,3 +6,9 @@ dist/
 
 # Cyrene agent
 .cyrene/
+
+# Local agent tooling / Cloudflare skills
+.agents/
+.claude/
+.wrangler/
+skills-lock.json

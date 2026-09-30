@@ -1,5 +1,16 @@
 export default {
   async fetch(request, env) {
+    if (request.method === "GET" || request.method === "HEAD") {
+      const url = new URL(request.url);
+
+      if (url.pathname === "/api/auth") {
+        return startOAuth(env);
+      }
+      if (url.pathname === "/api/auth/callback") {
+        return handleOAuthCallback(request, env);
+      }
+    }
+
     const response = await env.ASSETS.fetch(request);
 
     if (response.status !== 404 || !["GET", "HEAD"].includes(request.method)) {
@@ -24,3 +35,49 @@ export default {
     return response;
   },
 };
+
+function startOAuth(env) {
+  const state = crypto.randomUUID();
+  const url = `https://github.com/login/oauth/authorize?client_id=${env.GITHUB_CLIENT_ID}&scope=repo,user&state=${state}`;
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: url,
+      "Set-Cookie": `oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax`,
+    },
+  });
+}
+
+async function handleOAuthCallback(request, env) {
+  const url = new URL(request.url);
+  const code = url.searchParams.get("code");
+  const state = url.searchParams.get("state");
+
+  const cookieHeader = request.headers.get("Cookie") || "";
+  const storedState = cookieHeader.match(/(?:^|;\s*)oauth_state=([^;]+)/)?.[1];
+
+  if (!state || !storedState || state !== storedState) {
+    return new Response("Invalid state parameter", { status: 403 });
+  }
+
+  const res = await fetch("https://github.com/login/oauth/access_token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      client_id: env.GITHUB_CLIENT_ID,
+      client_secret: env.GITHUB_CLIENT_SECRET,
+      code,
+    }),
+  });
+
+  const { access_token } = await res.json();
+  const html = `<script>window.opener.postMessage('authorization:github:success:${JSON.stringify({
+    token: access_token,
+    provider: "github",
+  })}', window.location.origin);</script>`;
+
+  return new Response(html, {
+    headers: { "Content-Type": "text/html; charset=utf-8" },
+  });
+}
