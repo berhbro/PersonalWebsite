@@ -5,7 +5,7 @@ backend:
   name: github
   repo: berhbro/PersonalWebsite
   branch: main
-  base_url: https://你的域名.com
+  base_url: https://https://github.com/berhbro/
   auth_endpoint: /api/auth
 
 media_folder: static/images/uploads
