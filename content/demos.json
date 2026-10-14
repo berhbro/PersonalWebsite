@@ -3,19 +3,15 @@
     {
       "slug": "personal-website",
       "name": "个人网站",
-      "description": "基于 Flask、HTML、CSS 和少量 JavaScript 搭建的响应式个人主页。",
+      "description": "基于 Flask、HTML、CSS 和少量 JavaScript 搭建的响应式个人主页。Github仓库是私有的",
       "tags": [
         "Flask",
         "HTML",
         "CSS",
         "JavaScript"
       ],
-      "github": "https://github.com/berhbro",
-      "video": {
-        "type": "file",
-        "url": "",
-        "title": "项目演示视频"
-      },
+      "github": "https://github.com/berhbro/PersonalWebsite",
+      "video": null,
       "document": []
     },
     {
@@ -28,11 +24,7 @@
         "dsh"
       ],
       "github": "https://github.com/berhbro/dsh-cyrene-theme",
-      "video": {
-        "type": "embed",
-        "url": "",
-        "title": "功能演示"
-      },
+      "video": null,
       "document": []
     },
     {
@@ -44,11 +36,7 @@
         "Demo"
       ],
       "github": "",
-      "video": {
-        "type": "file",
-        "url": "",
-        "title": "演示视频"
-      },
+      "video": null,
       "document": []
     }
   ]
