@@ -440,6 +440,15 @@ def index():
     )
 
 
+@app.route("/blog")
+def blog_list():
+    return render_template(
+        "blog_list.html",
+        profile=profile,
+        blog_posts=load_blog_posts(),
+    )
+
+
 @app.route("/blog/<slug>")
 def blog_detail(slug):
     post = next((item for item in load_blog_posts() if item["slug"] == slug), None)

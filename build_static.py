@@ -72,6 +72,7 @@ def main():
 
     with app.test_client() as client:
         export_route(client, "/", "index.html")
+        export_route(client, "/blog", "blog/index.html")
         export_route(client, "/demos", "demos/index.html")
         export_route(client, "/gallery", "gallery/index.html")
 

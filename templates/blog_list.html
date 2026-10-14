@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}博客 - {{ profile.name }}的个人网站{% endblock %}
+
+{% block content %}
+<section class="blog-page">
+    <div class="blog-hero">
+        <div>
+            <p class="eyebrow">Blog</p>
+            <h1>全部博客</h1>
+            <p>这里收录了 {{ blog_posts|length }} 篇文章。点击任意一篇查看全文。</p>
+        </div>
+        <a class="button ghost" href="{{ url_for('index') }}">返回首页</a>
+    </div>
+
+    {% if blog_posts %}
+    <div class="blog-list">
+        {% for post in blog_posts %}
+        <article class="blog-item">
+            <div>
+                <time>{{ post.date }}</time>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.excerpt }}</p>
+            </div>
+            <a class="button ghost" href="{{ url_for('blog_detail', slug=post.slug) }}">阅读全文</a>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="gallery-empty">
+        <p>还没有博客文章。在后台「博客」里发布后，这里就会显示。</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

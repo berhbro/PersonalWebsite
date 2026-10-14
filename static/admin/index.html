@@ -4,6 +4,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>内容管理后台</title>
+    <style>
+        /* Sveltia 默认从 jsDelivr 拉取字体，国内网络经常拉不到；一旦失败，图标就会退化成
+           "article"/"photo_library" 这类连字名文字并把侧栏撑爆。这里改用自查的自托管字体。 */
+        @font-face {
+            font-family: "SveltiaIconsLocal";
+            src: url("/static/admin/fonts/material-symbols-outlined.woff2") format("woff2");
+            font-weight: 100 700;
+            font-style: normal;
+            font-display: block;
+        }
+        @font-face {
+            font-family: "Source Sans 3";
+            src: url("/static/admin/fonts/source-sans-3.woff2") format("woff2");
+            font-weight: 200 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        .material-symbols-outlined,
+        [class*="material-symbols"] {
+            font-family: "SveltiaIconsLocal", "Material Symbols Outlined" !important;
+        }
+    </style>
 </head>
 <body>
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>

@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 <section class="home-layout" id="about">
@@ -82,6 +82,7 @@
                     <p class="eyebrow">Latest Blog</p>
                     <h2>latest Blogs</h2>
                 </div>
+                <a class="button ghost" href="{{ url_for('blog_list') }}">查看全部</a>
             </div>
 
             <div class="blog-list">

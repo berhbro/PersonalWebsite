@@ -4,7 +4,7 @@
 
 {% block content %}
 <article class="article">
-    <a class="text-link" href="{{ url_for('index') }}#blog">← 返回 Blog</a>
+    <a class="text-link" href="{{ url_for('blog_list') }}">← 返回 Blog</a>
     <p class="eyebrow">Blog</p>
     <h1>{{ post.title }}</h1>
     <time>{{ post.date }}</time>

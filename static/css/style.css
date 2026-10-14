@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg: #f6f0e7;
     --surface: #fffaf2;
     --surface-soft: rgba(255, 250, 242, 0.78);
@@ -523,7 +523,8 @@ p {
     border-radius: 20px;
 }
 
-.gallery-page {
+.gallery-page,
+.blog-page {
     width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
     padding: 62px 0 76px;
@@ -536,7 +537,8 @@ p {
 }
 
 .demos-hero,
-.gallery-hero {
+.gallery-hero,
+.blog-hero {
     margin-bottom: 28px;
     padding: 30px;
     display: flex;
@@ -551,14 +553,16 @@ p {
 }
 
 .demos-hero h1,
-.gallery-hero h1 {
+.gallery-hero h1,
+.blog-hero h1 {
     margin-bottom: 10px;
     font-size: clamp(38px, 6vw, 72px);
     line-height: 1;
 }
 
 .demos-hero p:not(.eyebrow),
-.gallery-hero p:not(.eyebrow) {
+.gallery-hero p:not(.eyebrow),
+.blog-hero p:not(.eyebrow) {
     margin-bottom: 0;
     color: var(--muted);
 }
@@ -961,7 +965,8 @@ time {
     .blog-item,
     .section-heading.compact,
     .demos-hero,
-    .gallery-hero {
+    .gallery-hero,
+    .blog-hero {
         align-items: flex-start;
         flex-direction: column;
     }
@@ -976,7 +981,8 @@ time {
     .article,
     .demos-hero,
     .demo-entry,
-    .gallery-hero {
+    .gallery-hero,
+    .blog-hero {
         padding: 22px;
         border-radius: 26px;
     }
