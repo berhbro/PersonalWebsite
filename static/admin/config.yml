@@ -1,4 +1,4 @@
-# Decap CMS 配置
+# 后台配置（Sveltia CMS，兼容 Decap 的 config.yml 格式）
 # 部署前把 base_url 改成你的真实域名，例如 https://xxxx.pages.dev 或自定义域名。
 
 backend:
@@ -94,3 +94,20 @@ collections:
               - { label: 歌手, name: artist, widget: string }
               - { label: 音频文件, name: audio_url, widget: file }
               - { label: 封面图, name: cover, widget: image, required: false, media_folder: static/images, public_folder: /static/images }
+
+  - name: gallery
+    label: 图库
+    label_singular: 照片
+    media_folder: /static/images/album
+    public_folder: /static/images/album
+    files:
+      - label: 相册
+        name: gallery
+        file: content/gallery.json
+        format: json
+        fields:
+          - label: 照片
+            name: photos
+            widget: list
+            allow_add: true
+            field: { label: 图片, name: src, widget: image }

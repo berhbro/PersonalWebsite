@@ -24,7 +24,7 @@
     </div>
     {% else %}
     <div class="gallery-empty">
-        <p>还没有相册图片。把图片放入 <code>static/images/album</code> 后刷新页面即可。</p>
+        <p>还没有相册图片。进入<a href="{{ url_for('static', filename='admin/index.html') }}">后台「图库」</a>上传照片，或把图片放入 <code>static/images/album</code> 后刷新页面即可。</p>
     </div>
     {% endif %}
 </section>

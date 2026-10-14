@@ -14,6 +14,7 @@ BLOG_DIR = CONTENT_DIR / "blogs"
 DEMOS_FILE = CONTENT_DIR / "demos.json"
 MUSIC_PLAYLIST_FILE = CONTENT_DIR / "music_playlist.json"
 PROFILE_FILE = CONTENT_DIR / "profile.json"
+GALLERY_FILE = CONTENT_DIR / "gallery.json"
 ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 
 _DEFAULT_PROFILE = {
@@ -185,24 +186,52 @@ def resolve_playlist_track(track):
     }
 
 
+def gallery_src_to_static_path(value):
+    """把后台里存的图片地址转成 url_for('static', filename=...) 需要的相对路径。"""
+    path = (value or "").strip()
+    if path.startswith("/static/"):
+        return path[len("/static/"):]
+    return path.lstrip("/")
+
+
 def get_album_photos():
     album_dir = Path(app.static_folder) / "images" / "album"
-    if not album_dir.exists():
-        return []
+
+    disk_photos = {}
+    if album_dir.exists():
+        for image_path in sorted(album_dir.iterdir()):
+            if image_path.suffix.lower() not in ALLOWED_IMAGE_EXTENSIONS:
+                continue
+            if image_path.stem.lower() == "avatar":
+                continue
+            disk_photos[image_path.name] = image_path.stem
 
     photos = []
-    for image_path in sorted(album_dir.iterdir()):
-        if image_path.suffix.lower() not in ALLOWED_IMAGE_EXTENSIONS:
-            continue
-        if image_path.stem.lower() == "avatar":
-            continue
+    seen = set()
 
-        photos.append(
-            {
-                "src": f"images/album/{image_path.name}",
-                "title": image_path.stem,
-            }
-        )
+    # 优先按后台维护的顺序展示，再补上手动放进目录、但还没登记的图片。
+    if GALLERY_FILE.exists():
+        try:
+            data = json.loads(GALLERY_FILE.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            data = {}
+
+        entries = data.get("photos", []) if isinstance(data, dict) else data
+        if isinstance(entries, list):
+            for entry in entries:
+                if isinstance(entry, dict):
+                    entry = entry.get("src") or entry.get("image") or ""
+
+                name = Path(gallery_src_to_static_path(entry)).name
+                if not name or name in seen or name not in disk_photos:
+                    continue
+
+                photos.append({"src": f"images/album/{name}", "title": disk_photos[name]})
+                seen.add(name)
+
+    for name in sorted(disk_photos):
+        if name not in seen:
+            photos.append({"src": f"images/album/{name}", "title": disk_photos[name]})
 
     return photos
 
